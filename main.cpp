@@ -2,6 +2,8 @@
 #include <cmath>
 #include <SDL/SDL.h>
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
 #include "const.h"
 #include "graphics.h"
 #include "snake.h"
@@ -16,29 +18,51 @@ SDL_Surface *screen;
 Snake* mainSnake;
 
 void web_frame(){
-  SDL_PumpEvents();
-  /*
-  if (SDL_GetMouseState(x, y) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-    //printf("Mouse Button 1 (left) is pressed. at %d. %d", x/4, y/4);
-    vortex_loc(ws->grid,0,x/4, y/4);
+  SDL_Event event;
+
+  while( SDL_PollEvent( &event ) ){
+    switch( event.type ){
+      case SDL_KEYDOWN:
+        switch( event.key.keysym.sym ){
+            case SDLK_LEFT:
+              if(mainSnake->dir != 0 )mainSnake->dir = 2;
+              break;
+            case SDLK_RIGHT:
+              if(mainSnake->dir != 2 )mainSnake->dir = 0;
+              break;
+            case SDLK_UP:
+              if(mainSnake->dir != 3 )mainSnake->dir = 1;
+              break;
+            case SDLK_DOWN:
+              if(mainSnake->dir != 1 )mainSnake->dir = 3;
+              break;
+            default:
+                break;
+      }
+    }
   }
-  if (SDL_GetMouseState(x, y) & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
-    //printf("Mouse Button 1 (left) is pressed. at %d. %d", x/4, y/4);
-    vortex_loc(ws->grid,1,x/4, y/4);
-  }*/
 
   if (SDL_MUSTLOCK(screen)) SDL_LockSurface(screen);
-  drawBoard(screen,mainSnake->board);
+  drawBoard(screen,mainSnake->board,mainSnake->cur_food);
   mainSnake->updateSnake();
   if (SDL_MUSTLOCK(screen)) SDL_UnlockSurface(screen);
   SDL_Flip(screen);
 }
 
-int main(){
+extern "C" {
+  int getScore(){
+    return mainSnake->score;
+  }
+}
+
+int main(int argc, char **argv){
+  std::srand(std::time(0));
   SDL_Init(SDL_INIT_VIDEO);
-  screen = SDL_SetVideoMode(NX, NY, 32, SDL_SWSURFACE);
+  printf("Init: %d\n", TTF_Init());
+  printf("%d\n",getScore());
+  screen = SDL_SetVideoMode(NX, NY, 32, SDL_HWSURFACE);
   mainSnake = new Snake();
-  emscripten_set_main_loop(web_frame, 10, 0);
+  emscripten_set_main_loop(web_frame, 30, 0);
   SDL_Quit();
   return 0;
 }

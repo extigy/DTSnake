@@ -26,17 +26,32 @@ SDL_Point pointRotated(SDL_Point actual, SDL_Point orig, float radians) {
   }
 }*/
 
-void drawBoard(SDL_Surface *surface, std::vector< std::vector<int> > &snake){
+void drawBoard(SDL_Surface *surface, std::vector< std::vector<int> > &snake,SDL_Point cur_food){
   SDL_Point origin = {NX/2.0f, NY/2.0f};
+  //for(int i=(NX-NY)/2;i<NX/2+NY/2;i++){
   for(int i=0;i<NX;i++){
     for(int j=0;j<NY;j++){
-      SDL_Point ij = {i, j};
-      //ij = pointRotated(ij, origin, M_PI/4);
-      SDL_Point block = {round((ij.x - origin.x)/(double)NS), round((ij.y - origin.y)/(double)NS)};
-      if(snake[(NX/NS)+block.x][(NY/NS)+block.y] > 0){
-        *((Uint32*)surface->pixels + j*NY  + i) = SDL_MapRGBA(surface->format, fabs(block.x)*5,fabs(block.y)*5,255, 255);
-      } else {
-        *((Uint32*)surface->pixels + j*NY  + i) = SDL_MapRGBA(surface->format, 0,0,0, 255);
+
+      if (i < (NX-NY)/2 || i >NX/2+NY/2){
+        *((Uint32*)surface->pixels + j*NX  + i) = SDL_MapRGBA(surface->format, 153,232,153, 255);
+      }else{
+        SDL_Point ij = {i, j};
+        //ij = pointRotated(ij, origin, M_PI/4);
+        SDL_Point block = {round((ij.x - origin.x)/(double)NS), round((ij.y - origin.y)/(double)NS)};
+        if(snake[(NY/NS)+block.x][(NY/NS)+block.y] > 0 || (cur_food.x == block.x && cur_food.y == block.y)){
+          *((Uint32*)surface->pixels + j*NX  + i) = SDL_MapRGBA(surface->format, 0,0,0, 240);
+        } else {
+          if(fabs(block.x)+fabs(block.y) < M_SQRT2*(0.5*NY/NS) && fmax(fabs(block.x),fabs(block.y))<(0.5*NY/NS)){
+              //cool effect
+              if(i%NS == 0 || i%NS==NS-1 || j%NS == 0 || j%NS==NS-1){
+                *((Uint32*)surface->pixels + j*NX  + i) = SDL_MapRGBA(surface->format, 103,182,103, 255);
+              }else{
+                *((Uint32*)surface->pixels + j*NX  + i) = SDL_MapRGBA(surface->format, 153,232,153, 255);
+              }
+            } else {
+              *((Uint32*)surface->pixels + j*NX  + i) = SDL_MapRGBA(surface->format, 0,0,0, 240);
+          }
+        }
       }
     }
   }
