@@ -31,7 +31,7 @@ SDL_Point pointRotated(SDL_Point actual, SDL_Point orig, float radians) {
 
 void drawBoard(SDL_Surface *surface, std::vector< std::vector<int> > &snake,SDL_Point cur_food){
   SDL_Point origin = {NX/2.0f, NY/2.0f};
-  SDL_BlitSurface (bgimage, NULL, screen, NULL);
+  SDL_BlitSurface (bgimage, NULL, surface, NULL);
   //for(int i=(NX-NY)/2;i<NX/2+NY/2;i++){
   for(int i=0;i<NX;i++){
     for(int j=0;j<NY;j++){
