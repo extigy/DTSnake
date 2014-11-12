@@ -21,22 +21,35 @@ SDL_Surface *bgimage = IMG_Load("n3310a.jpg");
 
 void web_frame(){
   SDL_Event event;
-
+  int flag = 0;
   while( SDL_PollEvent( &event ) ){
+    if(flag == 0)
     switch( event.type ){
       case SDL_KEYDOWN:
         switch( event.key.keysym.sym ){
             case SDLK_LEFT:
-              if(mainSnake->dir != 0 )mainSnake->dir = 2;
+              if(mainSnake->dir != 0 ){
+                mainSnake->dir = 2;
+                flag = 1;
+              }
               break;
             case SDLK_RIGHT:
-              if(mainSnake->dir != 2 )mainSnake->dir = 0;
+              if(mainSnake->dir != 2 ){
+                mainSnake->dir = 0;
+                flag = 1;
+              }
               break;
             case SDLK_UP:
-              if(mainSnake->dir != 3 )mainSnake->dir = 1;
+              if(mainSnake->dir != 3 ){
+                mainSnake->dir = 1;
+                flag = 1;
+              }
               break;
             case SDLK_DOWN:
-              if(mainSnake->dir != 1 )mainSnake->dir = 3;
+              if(mainSnake->dir != 1 ){
+                mainSnake->dir = 3;
+                flag = 1;
+              }
               break;
             default:
                 break;
