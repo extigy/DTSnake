@@ -17,7 +17,7 @@
 
 SDL_Surface *screen;
 Snake* mainSnake;
-SDL_Surface *bgimage = IMG_Load("n3310s.jpg");
+SDL_Surface *bgimage;
 
 void web_frame(){
   SDL_Event event;
@@ -58,7 +58,7 @@ void web_frame(){
   }
 
   if (SDL_MUSTLOCK(screen)) SDL_LockSurface(screen);
-  drawBoard(screen,mainSnake->board,mainSnake->cur_food);
+  drawBoard(screen,mainSnake->board,mainSnake->cur_food,bgimage);
   mainSnake->updateSnake();
   if (SDL_MUSTLOCK(screen)) SDL_UnlockSurface(screen);
   SDL_Flip(screen);
@@ -76,6 +76,7 @@ int main(int argc, char **argv){
   printf("Init: %d\n", TTF_Init());
   printf("%d\n",getScore());
   screen = SDL_SetVideoMode(NX, NY, 32, SDL_HWSURFACE);
+  bgimage = IMG_Load("n3310s.jpg");
   mainSnake = new Snake();
   emscripten_set_main_loop(web_frame, 30, 0);
   SDL_Quit();

@@ -1,8 +1,6 @@
 #include "graphics.h"
 #include <SDL/SDL_image.h>
 
-extern SDL_Surface *bgimage;
-
 SDL_Point pointRotated(SDL_Point actual, SDL_Point orig, float radians) {
   SDL_Point rotated;
 
@@ -29,9 +27,15 @@ SDL_Point pointRotated(SDL_Point actual, SDL_Point orig, float radians) {
   }
 }*/
 
-void drawBoard(SDL_Surface *surface, std::vector< std::vector<int> > &snake,SDL_Point cur_food){
+void drawBoard(SDL_Surface *surface, std::vector< std::vector<int> > &snake,SDL_Point cur_food, SDL_Surface *bgimage){
   SDL_Point origin = {NX/2.0f, NY/2.0f};
-  SDL_BlitSurface (bgimage, NULL, surface, NULL);
+  //SDL_Rect dest = { 0, 0, NX, NY };
+  //SDL_BlitSurface (bgimage, &dest, surface, &dest);
+   for(int i=0;i<NX;i++){
+    for(int j=0;j<NY;j++){
+	*((Uint32*)surface->pixels + j*NX  + i) =  *((Uint32*)bgimage->pixels + j*NX  + i);
+ 	 }
+   }
   //for(int i=(NX-NY)/2;i<NX/2+NY/2;i++){
   for(int i=0;i<NX;i++){
     for(int j=0;j<NY;j++){
@@ -43,12 +47,12 @@ void drawBoard(SDL_Surface *surface, std::vector< std::vector<int> > &snake,SDL_
         //ij = pointRotated(ij, origin, M_PI/4);
         SDL_Point block = {round((ij.x - origin.x)/(double)NS), round((ij.y - origin.y)/(double)NS)};
         if(snake[(NY/NS)+block.x][(NY/NS)+block.y] > 0 || (cur_food.x == block.x && cur_food.y == block.y)){
-          *((Uint32*)surface->pixels + j*NX  + i) = SDL_MapRGBA(surface->format, 0,0,0, 240);
+          *((Uint32*)surface->pixels + j*NX  + i) = SDL_MapRGBA(surface->format, 55,68,50, 255);
         } else {
           if(fabs(block.x)+fabs(block.y) < M_SQRT2*(0.5*NY/NS) && fmax(fabs(block.x),fabs(block.y))<(0.5*NY/NS)){
               //*((Uint32*)surface->pixels + j*NX  + i) = SDL_MapRGBA(surface->format, 153,232,153, 255);
             } else {
-              *((Uint32*)surface->pixels + j*NX  + i) = SDL_MapRGBA(surface->format, 0,0,0, 240);
+              *((Uint32*)surface->pixels + j*NX  + i) = SDL_MapRGBA(surface->format, 55,68,50, 255);
           }
         }
       }

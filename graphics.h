@@ -6,5 +6,5 @@
 #include <vector>
 #include "const.h"
 
-void drawBoard(SDL_Surface *surface,std::vector< std::vector<int> > &snake,SDL_Point cur_food);
+void drawBoard(SDL_Surface *surface,std::vector< std::vector<int> > &snake,SDL_Point cur_food,SDL_Surface *bgimage);
 #endif
