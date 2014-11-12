@@ -1,4 +1,4 @@
-gpe.js
+DTSnake
 ======
 
-Web GPE solver for emscripten
+Snake on a Double Torus.
