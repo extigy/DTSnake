@@ -17,7 +17,7 @@
 
 SDL_Surface *screen;
 Snake* mainSnake;
-SDL_Surface *bgimage = IMG_Load("n3310a.jpg");
+SDL_Surface *bgimage = IMG_Load("n3310s.jpg");
 
 void web_frame(){
   SDL_Event event;
