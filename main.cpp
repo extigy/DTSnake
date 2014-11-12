@@ -4,6 +4,7 @@
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL/SDL_image.h>
 #include "const.h"
 #include "graphics.h"
 #include "snake.h"
@@ -16,6 +17,7 @@
 
 SDL_Surface *screen;
 Snake* mainSnake;
+SDL_Surface *bgimage = IMG_Load("n3310a.jpg");
 
 void web_frame(){
   SDL_Event event;
